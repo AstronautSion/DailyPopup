@@ -11,7 +11,7 @@
         <script src="dailyPopup.js"></script>
     </head>
     <body>
-        <!-- 생성자 선언시 자동으로 body안에 생성됨 -->
+        <!-- 생성자 함수 new DailyPopup() 선언시 자동으로 body안에 생성됨 -->
     </body>
 ~~~
 <br/>
@@ -20,12 +20,12 @@
 ~~~js
     new DailyPopup([
         {
-            responsive: '[true, false] 반응형 대응',
+            type: 'responsive / pc / mobile',
             img: '이미지경로',
             link: '이미지클릭시 경로'
         },
         {
-            responsive: '[true, false] 반응형 대응',
+            type: 'responsive / pc / mobile',
             img: '이미지경로',
             link: '이미지클릭시 경로'
         }
@@ -39,7 +39,7 @@
 ~~~js
     // 예시
     new DailyPopup({
-        responsive: '[true, false] 반응형 대응',
+        type: 'responsive / pc / mobile',
         img: '이미지경로',
         link: '이미지클릭시 경로'
     });
