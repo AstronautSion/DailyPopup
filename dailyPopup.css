@@ -1,0 +1,50 @@
+
+/* PC responsive */
+@media screen and (min-width:769px){
+    .daily-popup__item.is-responsive{
+
+    }
+    .daily-popup__content.is-responsive{
+    
+    }
+    .daily-popup__link.is-responsive{
+    
+    }
+    
+}
+
+/* Mobile responsive */
+@media screen and (max-width:768px){
+    .daily-popup__item.is-responsive{
+
+    }
+    .daily-popup__content.is-responsive{
+    
+    }
+    .daily-popup__link.is-responsive{
+    
+    }    
+}
+
+/* Pc */
+.daily-popup__item.is-pc{
+
+}
+.daily-popup__content.is-pc{
+    
+}
+.daily-popup__link.is-pc{
+
+}    
+
+
+/* Mobile */
+.daily-popup__item.is-mobile{
+
+}
+.daily-popup__content.is-mobile{
+    
+}
+.daily-popup__link.is-mobile{
+
+}    

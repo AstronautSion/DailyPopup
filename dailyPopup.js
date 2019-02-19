@@ -1,7 +1,7 @@
 
 function DailyPopup(options){
-    this.className = null;
     this.options = null;
+    this.className = null;
     this.cookieName = null;
     
     this.init(options);
@@ -27,8 +27,9 @@ DailyPopup.prototype = {
         this.popup = parent;
     },
     //팝업 html 마크업 생성
-    createPopup : function(img, link, idx){
-        var popupHtml = '<div id="daily-popup--'+idx+'" class="daily-popup__item">' +
+    createPopup : function(img, link, linkType, idx, type){
+        
+        var popupHtml = '<div id="daily-popup--'+idx+'" class="daily-popup__item '+type+'">' +
                             '<div class="daily-popup__content">'+
                                 '<a class="daily-popup__link" href="'+link+'"><img src="'+img+'" /></a>' +
                             '</div>'+
@@ -42,8 +43,9 @@ DailyPopup.prototype = {
     // 팝업 이벤트
     showEvent : function(){
         var thisObj = this;
+        //popup html 뿌리기
         this.options.forEach(function(el, i){
-            thisObj.createPopup(el.img, el.link, i);
+            thisObj.createPopup(el.img, el.link, i, thisObj.typeQuarter(thisObj.options[i].type));
         });
         //쿠기생성 밑 쿠키 가져오기
         var thisPopup = Array.prototype.slice.call(thisObj.popup.querySelectorAll('.daily-popup__item'));
@@ -55,6 +57,21 @@ DailyPopup.prototype = {
             thisObj.eventCookie(el, thisObj.cookieName, thisObj.btnClose, thisObj.btnCheck);
         });
     },
+    // 타입 분기
+    typeQuarter : function(type){
+        if(type){type = type.trim();}
+        if(type == undefined || type === 'responsive'){
+            return 'is-responsive'; 
+        }else if(type === 'pc'){ 
+            return 'is-pc'; 
+        }else if(type === 'mobile'){ 
+            return 'is-mobile'; 
+        }else{
+            console.error('유효하지 않은 type입니다.');
+            return 'is-responsive';
+        }
+    },
+
     eventCookie : function(el, cookie, btnClose, checkbox){
         var objThis = this;
         var cookiedata = document.cookie;

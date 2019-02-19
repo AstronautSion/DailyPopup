@@ -49,4 +49,4 @@
 ~~~
 3. css 작성쓰..
 4. linkTarget 연결 시키기
-
+5. options 유효성 검사 및 default options 만들기
