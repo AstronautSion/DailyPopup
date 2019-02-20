@@ -35,7 +35,7 @@
             type: 'responsive[default value] / pc / mobile',
             img: '이미지경로',
             link: '이미지클릭시 경로',
-            linkTarget : '_blnak[default value], _self 등 이미지 타겟'
+            linkTarget : '_blnak[default value], _self, _top, _parent'
         },{
             type: 'responsive',
             img: 'https://placehold.it/500x600',
