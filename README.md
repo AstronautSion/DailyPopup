@@ -15,8 +15,9 @@
     </body>
 ~~~
 <br/>
-### [ JS ]
-#### Call the DailyPopup
+
+### [ JS ] Call the DailyPopup
+
 ~~~js
     new DailyPopup({
             type: 'responsive[default value] / pc / mobile',
@@ -26,8 +27,8 @@
         });
 ~~~
 
-### [ JS ]
-#### Multi Call the DailyPopup
+### [ JS ] Multi Call the DailyPopup
+
 ~~~js
     new DailyPopup([
         {
