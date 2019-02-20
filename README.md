@@ -22,8 +22,8 @@
     new DailyPopup({
             type: 'responsive[default value] / pc / mobile',
             img: '이미지경로',
-            link: '이미지클릭시 경로',
-            linkTarget : '_blnak[default value], _self 등 이미지 타겟'
+            link: '링크경로',
+            linkTarget : '_blnak[default value], _self, _top, _parent'
         });
 ~~~
 
@@ -34,7 +34,7 @@
         {
             type: 'responsive[default value] / pc / mobile',
             img: '이미지경로',
-            link: '이미지클릭시 경로',
+            link: '링크경로',
             linkTarget : '_blnak[default value], _self, _top, _parent'
         },{
             type: 'responsive',
