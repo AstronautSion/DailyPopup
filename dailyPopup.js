@@ -1,6 +1,7 @@
 
 function DailyPopup(options){
     this.options = null;
+    this.default = null;
     this.className = null;
     this.cookieName = null;
     
@@ -12,6 +13,12 @@ function DailyPopup(options){
 DailyPopup.prototype = {
     init : function(options){
         this.parentClassName = 'daily-popup';
+        this.default = {
+            type : 'responsive',
+            link : '#//',
+            img : 'https://placehold.it/500x600',
+            linkType : '_blank'
+        };
         this.options = options;
         this.popup = null;
         this.btnCheck = null;
@@ -31,7 +38,7 @@ DailyPopup.prototype = {
         
         var popupHtml = '<div id="daily-popup--'+idx+'" class="daily-popup__item '+type+'">' +
                             '<div class="daily-popup__content">'+
-                                '<a class="daily-popup__link" href="'+link+'"><img src="'+img+'" /></a>' +
+                                '<a class="daily-popup__link" href="'+link+'" target="'+linkType+'"><img src="'+img+'" /></a>' +
                             '</div>'+
                             '<div class="daily-popup__bottom">' +
                                 '<label class="daily-popup__checkbox-area"><input type="checkbox" id="daily-popup__checkbox'+idx+'" class="daily-popup__checkbox"/> 오늘하루 보지않기</label>' +
@@ -43,10 +50,16 @@ DailyPopup.prototype = {
     // 팝업 이벤트
     showEvent : function(){
         var thisObj = this;
-        //popup html 뿌리기
-        this.options.forEach(function(el, i){
-            thisObj.createPopup(el.img, el.link, i, thisObj.typeQuarter(thisObj.options[i].type));
-        });
+        
+        if(this.options.constructor === Array){ 
+            this.options.forEach(function(op, i){
+                op = thisObj.extendsOptions(thisObj.default, op); // 합치기
+                thisObj.createPopup(op.img, op.link, i, thisObj.typeQuarter(op.type));
+            });
+        }else if(this.options.constructor === Object){
+            this.options = this.extendsOptions(this.default, this.options);
+            this.createPopup(this.options.img, this.link, 0, this.typeQuarter(this.options.type));
+        }
         //쿠기생성 밑 쿠키 가져오기
         var thisPopup = Array.prototype.slice.call(thisObj.popup.querySelectorAll('.daily-popup__item'));
         thisPopup.forEach(function(el, i){
@@ -56,7 +69,25 @@ DailyPopup.prototype = {
             thisObj.getCookie(thisObj.cookieName);
             thisObj.eventCookie(el, thisObj.cookieName, thisObj.btnClose, thisObj.btnCheck);
         });
+        
     },
+
+    extendsOptions : function(defaults, options){
+        var extended = {};
+        var prop;
+        for (prop in defaults) {
+            if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
+                extended[prop] = defaults[prop];
+            }
+        }
+        for (prop in options) {
+            if (Object.prototype.hasOwnProperty.call(options, prop)) {
+                extended[prop] = options[prop];
+            }
+        }
+        return extended;
+    },
+
     // 타입 분기
     typeQuarter : function(type){
         if(type){type = type.trim();}
@@ -67,11 +98,11 @@ DailyPopup.prototype = {
         }else if(type === 'mobile'){ 
             return 'is-mobile'; 
         }else{
-            console.error('유효하지 않은 type입니다.');
+            console.error('유효하지 않은 type입니다. ( responsive, pc, mobile ) 중 택하세요.');
             return 'is-responsive';
         }
     },
-
+    
     eventCookie : function(el, cookie, btnClose, checkbox){
         var objThis = this;
         var cookiedata = document.cookie;
