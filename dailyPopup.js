@@ -16,7 +16,7 @@ DailyPopup.prototype = {
         this.default = {
             type : 'responsive',
             link : '#//',
-            img : 'https://placehold.it/500x600',
+            img : ['https://placehold.it/500x600', 'https://placehold.it/500x600' ],
             linkType : '_blank'
         };
         this.options = options;
@@ -34,31 +34,37 @@ DailyPopup.prototype = {
         this.popup = parent;
     },
     //팝업 html 마크업 생성
-    createPopup : function(img, link, linkType, idx, type){
+    createPopup : function(img, link, linkType, idx, typeString){
         
-        var popupHtml = '<div id="daily-popup--'+idx+'" class="daily-popup__item '+type+'">' +
-                            '<div class="daily-popup__content">'+
-                                '<a class="daily-popup__link" href="'+link+'" target="'+linkType+'"><img src="'+img+'" /></a>' +
-                            '</div>'+
-                            '<div class="daily-popup__bottom">' +
-                                '<label class="daily-popup__checkbox-area"><input type="checkbox" id="daily-popup__checkbox'+idx+'" class="daily-popup__checkbox"/> 오늘하루 보지않기</label>' +
-                                '<button id="daily-popup__close-button'+idx+'" type="button" class="daily-popup__close-button">닫기</button>' +
-                            '</div>' +
-                        '</div>';
-        this.popup.insertAdjacentHTML('beforeend',popupHtml); 
+        var popupHtmlStart = '<div id="daily-popup--'+idx+'" class="daily-popup__item '+typeString+'">' +
+                        '<div class="daily-popup__content">'+
+                        '<a class="daily-popup__link" href="'+link+'" target="'+linkType+'">';
+        
+        if(typeString === 'is-responsive'){ 
+            var popupHtmlmiddle =  '<img src="'+ img[0]+'"/><img src="'+img[1]+'"/>'; 
+        }
+        else if(typeString != 'is-responsive'){ 
+            var popupHtmlmiddle = '<img src="'+img+'"/>'; 
+        }
+
+        var popupHtmlEnd ='</a>'+'</div>'+'<div class="daily-popup__bottom">' +
+                '<label class="daily-popup__checkbox-area"><input type="checkbox" id="daily-popup__checkbox'+idx+'" class="daily-popup__checkbox"/> 오늘하루 보지않기</label>' +
+                '<button id="daily-popup__close-button'+idx+'" type="button" class="daily-popup__close-button">닫기</button>' +
+            '</div></div>';
+        
+        this.popup.insertAdjacentHTML('beforeend',popupHtmlStart + popupHtmlmiddle + popupHtmlEnd); 
     },
     // 팝업 이벤트
     showEvent : function(){
         var thisObj = this;
-        
         if(this.options.constructor === Array){ 
             this.options.forEach(function(op, i){
                 op = thisObj.extendsOptions(thisObj.default, op); // 합치기
-                thisObj.createPopup(op.img, op.link, i, thisObj.typeQuarter(op.type));
+                thisObj.createPopup(op.img, op.link, op.linkType, i, thisObj.typeQuarter(op.type));
             });
         }else if(this.options.constructor === Object){
             this.options = this.extendsOptions(this.default, this.options);
-            this.createPopup(this.options.img, this.link, 0, this.typeQuarter(this.options.type));
+            this.createPopup(this.options.img, this.options.link, this.options.linkType, 0, this.typeQuarter(this.options.type));
         }
         //쿠기생성 밑 쿠키 가져오기
         var thisPopup = Array.prototype.slice.call(thisObj.popup.querySelectorAll('.daily-popup__item'));

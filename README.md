@@ -20,10 +20,10 @@
 
 ~~~js
     new DailyPopup({
-            type: 'responsive[default value] / pc / mobile',
-            img: '이미지경로',
-            link: '링크경로',
-            linkTarget : '_blnak[default value], _self, _top, _parent'
+            type: 'responsive',
+            img: ['https://placehold.it/500x600','https://placehold.it/200x600'], //[ pc , mobile ]
+            link: 'https://www.google.com',
+            linkTarget : '_self' // _blank, _top, _self ...
         });
 ~~~
 
@@ -32,13 +32,13 @@
 ~~~js
     new DailyPopup([
         {
-            type: 'responsive[default value] / pc / mobile',
-            img: '이미지경로',
-            link: '링크경로',
-            linkTarget : '_blnak[default value], _self, _top, _parent'
+            type: 'pc',
+            img: 'https://placehold.it/500x600',
+            link: 'https://www.google.com',
+            linkTarget : '_blnak'
         },{
             type: 'responsive',
-            img: 'https://placehold.it/500x600',
+            img: ['https://placehold.it/500x600','https://placehold.it/500x600'],
             link: 'https://www.google.com',
             linkTarget : '_self'
         }
