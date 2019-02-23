@@ -15,11 +15,18 @@ DailyPopup.prototype = {
         this.parentClassName = 'daily-popup';
         this.default = {
             type : 'responsive',
-            link : '#//',
-            img : ['https://placehold.it/500x600', 'https://placehold.it/500x600' ],
+            link : '',
+            img : null,
             linkType : '_blank'
         };
         this.options = options;
+
+        if(this.options.type === 'responsive'){
+            this.default.img = ['https://placehold.it/500x600', 'https://placehold.it/500x600' ];
+        }else{
+            this.default.img = 'https://placehold.it/500x600';
+        }
+
         this.popup = null;
         this.btnCheck = null;
         this.cookieName = null; 
@@ -40,18 +47,19 @@ DailyPopup.prototype = {
                         '<div class="daily-popup__content">'+
                         '<a class="daily-popup__link" href="'+link+'" target="'+linkType+'">';
         
-        if(typeString === 'is-responsive'){ 
+        if(typeString === 'is-responsive'){  
             var popupHtmlmiddle =  '<img src="'+ img[0]+'"/><img src="'+img[1]+'"/>'; 
-        }
-        else if(typeString != 'is-responsive'){ 
+        }else if(typeString != 'is-responsive'){ 
             var popupHtmlmiddle = '<img src="'+img+'"/>'; 
         }
 
-        var popupHtmlEnd ='</a>'+'</div>'+'<div class="daily-popup__bottom">' +
-                '<label class="daily-popup__checkbox-area"><input type="checkbox" id="daily-popup__checkbox'+idx+'" class="daily-popup__checkbox"/> 오늘하루 보지않기</label>' +
+        var popupHtmlEnd ='</a></div>'+
+            '<div class="daily-popup__bottom">' +
+                '<label class="daily-popup__checkbox-area">'+
+                '<input type="checkbox" id="daily-popup__checkbox'+idx+'" class="daily-popup__checkbox"/> 오늘하루 보지않기</label>' +
                 '<button id="daily-popup__close-button'+idx+'" type="button" class="daily-popup__close-button">닫기</button>' +
             '</div></div>';
-        
+
         this.popup.insertAdjacentHTML('beforeend',popupHtmlStart + popupHtmlmiddle + popupHtmlEnd); 
     },
     // 팝업 이벤트
@@ -75,20 +83,19 @@ DailyPopup.prototype = {
             thisObj.getCookie(thisObj.cookieName);
             thisObj.eventCookie(el, thisObj.cookieName, thisObj.btnClose, thisObj.btnCheck);
         });
-        
     },
 
     extendsOptions : function(defaults, options){
         var extended = {};
         var prop;
         for (prop in defaults) {
-            if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
-                extended[prop] = defaults[prop];
+            if (Object.prototype.hasOwnProperty.call(defaults, prop)) { 
+                extended[prop] = defaults[prop]; 
             }
         }
         for (prop in options) {
-            if (Object.prototype.hasOwnProperty.call(options, prop)) {
-                extended[prop] = options[prop];
+            if (Object.prototype.hasOwnProperty.call(options, prop)) { 
+                extended[prop] = options[prop]; 
             }
         }
         return extended;
