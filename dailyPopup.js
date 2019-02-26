@@ -19,14 +19,11 @@ DailyPopup.prototype = {
             img : null,
             linkType : '_blank'
         };
-        this.options = options;
-
-        if(this.options.type === 'responsive'){
-            this.default.img = ['https://placehold.it/500x600', 'https://placehold.it/500x600' ];
-        }else{
+        ( options.type === 'responsive' ) ? 
+            this.default.img = ['https://placehold.it/500x600', 'https://placehold.it/500x600' ] : 
             this.default.img = 'https://placehold.it/500x600';
-        }
 
+        this.options = options;
         this.popup = null;
         this.btnCheck = null;
         this.cookieName = null; 
@@ -42,18 +39,19 @@ DailyPopup.prototype = {
     },
     //팝업 html 마크업 생성
     createPopup : function(img, link, linkType, idx, typeString){
-        
-        var popupHtmlStart = '<div id="daily-popup--'+idx+'" class="daily-popup__item '+typeString+'">' +
+        var popupHtmlStart, 
+            popupHtmlmiddle, 
+            popupHtmlEnd;
+
+        popupHtmlStart = '<div id="daily-popup--'+idx+'" class="daily-popup__item '+typeString+'">' +
                         '<div class="daily-popup__content">'+
                         '<a class="daily-popup__link" href="'+link+'" target="'+linkType+'">';
         
-        if(typeString === 'is-responsive'){  
-            var popupHtmlmiddle =  '<img src="'+ img[0]+'"/><img src="'+img[1]+'"/>'; 
-        }else if(typeString != 'is-responsive'){ 
-            var popupHtmlmiddle = '<img src="'+img+'"/>'; 
-        }
+        ( typeString === 'is-responsive' ) ?
+            popupHtmlmiddle =  '<img class="daily-popup__img" src="'+ img[0]+'"/><img class="daily-popup__img" src="'+img[1]+'"/>' :
+            popupHtmlmiddle = '<img class="daily-popup__img" src="'+img+'"/>'; 
 
-        var popupHtmlEnd ='</a></div>'+
+        popupHtmlEnd ='</a></div>'+
             '<div class="daily-popup__bottom">' +
                 '<label class="daily-popup__checkbox-area">'+
                 '<input type="checkbox" id="daily-popup__checkbox'+idx+'" class="daily-popup__checkbox"/> 오늘하루 보지않기</label>' +
@@ -62,6 +60,7 @@ DailyPopup.prototype = {
 
         this.popup.insertAdjacentHTML('beforeend',popupHtmlStart + popupHtmlmiddle + popupHtmlEnd); 
     },
+ 
     // 팝업 이벤트
     showEvent : function(){
         var thisObj = this;
@@ -149,9 +148,7 @@ DailyPopup.prototype = {
     },
    //팝업닫기 
     closePopup : function(el, cookie, checkbox){
-        if( checkbox.checked){
-            this.setCookie(cookie ,"Y",1);
-        }
+        if( checkbox.checked){ this.setCookie(cookie ,"Y",1); }
         el.style.display = "none";
     }
 }
