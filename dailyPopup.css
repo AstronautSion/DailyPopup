@@ -1,6 +1,17 @@
-
+.daily-popup__item{
+    position:absolute;
+}
+.daily-popup__item.is-hide{
+    display:none !important;
+}
 /* PC responsive */
 @media screen and (min-width:769px){
+    .daily-popup__overlay{
+        display:none;
+    }
+    .daily-popup__item.is-mobile{
+        display:none !important;
+    }
     .daily-popup__item.is-responsive{
         z-index:99999;
         position:absolute;
@@ -15,9 +26,15 @@
     .daily-popup__item.is-responsive .daily-popup__content{
         
     }
-    .daily-popup__item.is-responsive .daily-popup__item .daily-popup__img{
-        display:block;
+    .daily-popup__item.is-responsive .daily-popup__img{
         width:100%;
+        vertical-align:top;
+    }
+    .daily-popup__item.is-responsive .daily-popup__img--pc{
+        display:block;
+    }
+    .daily-popup__item.is-responsive .daily-popup__img--mobile{
+        display:none;
     }
     .daily-popup__item.is-responsive .daily-popup__link{
         display:block;
@@ -60,15 +77,83 @@
 
 /* Mobile responsive */
 @media screen and (max-width:768px){
-    .daily-popup__item.is-responsive{
 
+    .daily-popup__overlay{
+        position:fixed;
+        display:block;
+        top:0;
+        left:0;
+        width:100%;
+        height:100vh;
+        background-color:rgba(0,0,0,0.6);
     }
-    .daily-popup__content.is-responsive{
-    
+    .daily-popup__item.is-pc{
+        display:none !important;
     }
-    .daily-popup__link.is-responsive{
+    .daily-popup__item.is-responsive .daily-popup__img--pc{
+        display:none;
+    }
+    .daily-popup__item.is-responsive .daily-popup__img--mobile{
+        display:block;
+        width:100%;
+    }
+
+
     
+    .daily-popup__item.is-responsive .daily-popup__content{
+        position:fixed;
+        top:50%;
+        left:50%;
+        max-width:320px;
+        width:100%;
+        transform:translateX(-50%) translateY(-50%);
+        -webkit-transform:translateX(-50%) translateY(-50%);
+        -o-transform:translateX(-50%) translateY(-50%);
+        -ms-transform:translateX(-50%) translateY(-50%);
+    }
+     
+    .daily-popup__item.is-responsive .daily-popup__link{
+        display:block;
     }    
+    .daily-popup__item.is-responsive .daily-popup__bottom{
+        position:fixed;
+        bottom:0;
+        left:0;
+        width:100%;
+        text-align:center;
+    
+    }
+    .daily-popup__item.is-responsive .daily-popup__bottom:after{
+        content:'';
+        display:block;
+        clear:both;
+    }
+    .daily-popup__item.is-responsive .daily-popup__checkbox-area{
+        display:block;
+        float:left;
+        width:50%;
+        padding:0 1em;
+        line-height:50px;
+        background-color:#666;
+        color:#fff;
+        box-sizing:border-box;
+        border:0;
+        font-size:.875rem;
+    }
+    .daily-popup__item.is-responsive .daily-popup__close-button{
+        float:left;
+        display:block;
+        width:50%;
+        padding:0 1em;
+        line-height:50px;
+        background-color:#333;
+        border:0;
+        color:#fff;
+        box-sizing:border-box;
+        font-size:.875rem;
+    }
+    
+
 }
 
 
@@ -85,11 +170,8 @@
     line-height:1;
 
 }
-.daily-popup__item.is-pc .daily-popup__content{
-    
-}
-.daily-popup__item.is-pc .daily-popup__item .daily-popup__img{
-    display:block;
+.daily-popup__item.is-pc .daily-popup__img{
+    vertical-align:top;
     width:100%;
 }
 .daily-popup__item.is-pc .daily-popup__link{
@@ -131,7 +213,7 @@
 
 
 /* Mobile */
-.daily-popup__item.is-mobile{}
+
 
 .daily-popup__item.is-mobile .daily-popup__content{
     position:fixed;
@@ -158,16 +240,34 @@
     left:0;
     width:100%;
     text-align:center;
+
+}
+.daily-popup__item.is-mobile .daily-popup__bottom:after{
+    content:'';
+    display:block;
+    clear:both;
 }
 .daily-popup__item.is-mobile .daily-popup__checkbox-area{
-    padding:.5em 0;
-    display:inline-block;
+    display:block;
+    float:left;
+    width:50%;
+    padding:0 1em;
+    line-height:50px;
+    background-color:#666;
+    color:#fff;
+    box-sizing:border-box;
+    border:0;
+    font-size:.875rem;
 }
 .daily-popup__item.is-mobile .daily-popup__close-button{
-    width:100%;
+    float:left;
     display:block;
-    padding:1em;
+    width:50%;
+    padding:0 1em;
+    line-height:50px;
     background-color:#333;
     border:0;
     color:#fff;
+    box-sizing:border-box;
+    font-size:.875rem;
 }
