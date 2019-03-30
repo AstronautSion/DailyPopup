@@ -101,8 +101,12 @@ DailyPopup.prototype = {
 
     initOverlay : function(){
         var bool = false;
-        for( item of this.popupItems ){ 
-            if(item.style.display == 'block'){bool = true;} 
+        var result = [];
+        for( el of this.popupItems ){ 
+            if(!el.classList.contains('is-pc') ){ result.push(el); }
+        }
+        for( item of result ){ 
+            if(item.style.display == 'block' ){bool = true;} 
         }
         bool == true ? this.overlay.style.display = 'block' : this.overlay.style.display = 'none';
     },
