@@ -30,7 +30,7 @@ DailyPopup.prototype = {
             type        : 'responsive',
             link        : '',
             img         : null,
-            linkType    : '_blank',
+            linkTarget  : '_blank',
             position    : [10, 10]
         };
         ( options.type === 'responsive' ) ? 
@@ -53,14 +53,14 @@ DailyPopup.prototype = {
     },
 
     //팝업 html 마크업 생성
-    createPopup : function(img, link, linkType, idx, typeString,position){
+    createPopup : function(img, link, linkTarget, idx, typeString,position){
         var popupHtmlStart, 
             popupHtmlmiddle, 
             popupHtmlEnd;
         
         popupHtmlStart = '<div id="daily-popup--'+idx+'" class="'+this.className.popup+' '+typeString+'" style="top:'+position[0]+'px; left:'+position[1]+'px">' +
                         '<div class="daily-popup__content">'+
-                        '<a class="daily-popup__link" href="'+link+'" target="'+linkType+'">';
+                        '<a class="daily-popup__link" href="'+link+'" target="'+linkTarget+'">';
         
         ( typeString === 'is-responsive' ) ?
             popupHtmlmiddle =  '<img class="daily-popup__img daily-popup__img--pc" src="'+ img[0]+'"/><img class="daily-popup__img daily-popup__img--mobile" src="'+img[1]+'"/>' :
@@ -74,21 +74,40 @@ DailyPopup.prototype = {
             '</div></div>';
 
         this.popup.insertAdjacentHTML('beforeend',popupHtmlStart + popupHtmlmiddle + popupHtmlEnd); 
-        this.dragEvent(this.popup.querySelector('#daily-popup--'+idx));
+        // this.dragEvent(this.popup.querySelector('#daily-popup--'+idx),link, linkTarget );
         this.popupItems = this.popup.querySelectorAll('.'+this.className.popup);
+
+        this.imgSizeConfirm(this.popup.querySelector('#daily-popup--'+idx), typeString);
     },
- 
+    
+    imgSizeConfirm : function(elmnt, typeString){
+        var showImageSize = function(img){
+            var width;
+            if(img.naturalWidth){  
+                width = img.naturalWidth; 
+            }else {
+                var tImg = new Image();
+                width = tImg.width;
+            }
+            elmnt.style.width = width + 'px';
+        };
+        if( typeString === 'is-responsive' ){
+            showImageSize(elmnt.querySelector('img:nth-child(1)') );
+        }else if(typeString === 'is-pc'){
+            showImageSize(elmnt.querySelector('img'));
+        }
+    },
     // 팝업 이벤트
     showEvent : function(){
         var thisObj = this;
         if(this.options.constructor === Array){ //두개이상
             this.options.forEach(function(op, i){
                 op = thisObj.extendsOptions(thisObj.default, op); // 합치기
-                thisObj.createPopup(op.img, op.link, op.linkType, i, thisObj.typeQuarter(op.type), op.position);
+                thisObj.createPopup(op.img, op.link, op.linkTarget, i, thisObj.typeQuarter(op.type), op.position);
             });
         }else if(this.options.constructor === Object){ //하나
             this.options = this.extendsOptions(this.default, this.options);
-            this.createPopup(this.options.img, this.options.link, this.options.linkType, 0, this.typeQuarter(this.options.type), op.position);
+            this.createPopup(this.options.img, this.options.link, this.options.linkTarget, 0, this.typeQuarter(this.options.type), op.position);
         }
         //쿠기생성 밑 쿠키 가져오기
         var thisPopup = Array.prototype.slice.call(thisObj.popup.querySelectorAll('.daily-popup__item'));
@@ -100,7 +119,7 @@ DailyPopup.prototype = {
             thisObj.eventCookie(el, thisObj.cookieName, thisObj.btnClose, thisObj.btnCheck);
         });
     },
-
+    // overlay 초기화
     initOverlay : function(){
         var bool = false;
         var result = [];
@@ -112,7 +131,7 @@ DailyPopup.prototype = {
         }
         bool == true ? this.overlay.style.display = 'block' : this.overlay.style.display = 'none';
     },
-
+    // 옵션 합치기
     extendsOptions : function(defaults, options){
         var extended = {};
         var prop;
@@ -181,46 +200,59 @@ DailyPopup.prototype = {
         el.style.display = "none";
         this.initOverlay();
     },
-    //drag event
-    dragEvent : function(elmnt) {
-        var pos1 = 0, 
-            pos2 = 0, 
-            pos3 = 0, 
-            pos4 = 0;
+    // //drag event
+    // dragEvent : function(elmnt, link, linkTarget) {
+    //     var linkStatus = false;
+    //     var pos1 = 0, 
+    //         pos2 = 0, 
+    //         pos3 = 0, 
+    //         pos4 = 0;
 
-        var dragMouseDown = function(e) {
-            e = e || window.event;
-            e.preventDefault();
-            e.stopImmediatePropagation()
-            // get the mouse cursor position at startup:
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            // call a function whenever the cursor moves:
-            document.onmousemove = elementDrag;
-        };
+    //     var dragMouseDown = function(e) {
+    //         e = e || window.event;
+    //         e.preventDefault();
+    //         // get the mouse cursor position at startup:
+    //         pos3 = e.clientX;
+    //         pos4 = e.clientY;
+    //         document.onmouseup = closeDragElement;
+    //         // call a function whenever the cursor moves:
+    //         document.onmousemove = elementDrag;
+    //         // linkStatus init
+    //         linkStatus = false;
+    //         elmnt.querySelector('a').onclick = function(e){
+    //             e.preventDefault();
+    //         };
+    //     };
 
-        var elementDrag = function(e) {
-            e = e || window.event;
-            e.preventDefault();
-            e.stopImmediatePropagation()
-            // calculate the new cursor position:
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            // set the element's new position:
-            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-        };
+    //     var elementDrag = function(e) {
+    //         e = e || window.event;
+    //         e.preventDefault();
+    //         linkStatus = true;
+    //         // calculate the new cursor position:
+    //         pos1 = pos3 - e.clientX;
+    //         pos2 = pos4 - e.clientY;
+    //         pos3 = e.clientX;
+    //         pos4 = e.clientY;
+    //         // set the element's new position:
+    //         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    //         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    //     };
 
-        var closeDragElement = function(e) {
-            // stop moving when mouse button is released:
-            document.onmouseup = null;
-            document.onmousemove = null;
-        };
-        elmnt.onmousedown = dragMouseDown;
-    },
+    //     var closeDragElement = function(e) {
+    //         // stop moving when mouse button is released:
+    //         document.onmouseup = null;
+    //         document.onmousemove = null;
+
+    //         if(linkStatus == false){
+    //             if(linkTarget == '_blank'){ window.open(link);}
+    //             else{ window.location.href = link; }
+    //         }
+    //     };
+        
+    //     elmnt.onmousedown = dragMouseDown;
+    // },
+
+   
 
 }
 
