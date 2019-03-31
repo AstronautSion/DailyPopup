@@ -4,39 +4,40 @@ function DailyPopup(options){
     this.default = null;
     this.className = null;
     this.cookieName = null;
+    this.popup = null;
+    this.overlay = null;
+    this.popupItems = null;
+    this.btnCheck = null;
+ 
     
     this.init(options);
     this.createParentElement();
     this.showEvent();
     this.initOverlay();
+    
 }
 
 DailyPopup.prototype = {
     init : function(options){
 
         this.className = {
-            parent : 'daily-popup',
+            parent  : 'daily-popup',
             overlay : 'daily-popup__overlay',
-            popup : 'daily-popup__item'
+            popup   : 'daily-popup__item'
         };
 
         this.default = {
-            type : 'responsive',
-            link : '',
-            img : null,
-            linkType : '_blank',
-            position: [10, 10]
+            type        : 'responsive',
+            link        : '',
+            img         : null,
+            linkType    : '_blank',
+            position    : [10, 10]
         };
         ( options.type === 'responsive' ) ? 
             this.default.img = ['https://placehold.it/500x600', 'https://placehold.it/500x600' ] : 
             this.default.img = 'https://placehold.it/500x600';
 
         this.options = options;
-        this.popup = null;
-        this.overlay = null;
-        this.popupItems = null;
-        this.btnCheck = null;
-        this.cookieName = null; 
     },
     //부모 엘리먼트 생성
     createParentElement : function(){
@@ -73,6 +74,7 @@ DailyPopup.prototype = {
             '</div></div>';
 
         this.popup.insertAdjacentHTML('beforeend',popupHtmlStart + popupHtmlmiddle + popupHtmlEnd); 
+        this.dragEvent(this.popup.querySelector('#daily-popup--'+idx));
         this.popupItems = this.popup.querySelectorAll('.'+this.className.popup);
     },
  
@@ -171,13 +173,55 @@ DailyPopup.prototype = {
         d.setTime(d.getTime() + (exdays*24*60*60*1000));
         var expires = "expires="+d.toUTCString();
         document.cookie = cookieName + "=" + cookieValue + "; " + expires;
-        console.log(document.cookie);
+       //console.log(document.cookie);
     },
    //팝업닫기 
     closePopup : function(el, cookie, checkbox){
         if( checkbox.checked){ this.setCookie(cookie ,"Y",1); }
         el.style.display = "none";
         this.initOverlay();
-    }
+    },
+    //drag event
+    dragEvent : function(elmnt) {
+        var pos1 = 0, 
+            pos2 = 0, 
+            pos3 = 0, 
+            pos4 = 0;
+
+        var dragMouseDown = function(e) {
+            e = e || window.event;
+            e.preventDefault();
+            e.stopImmediatePropagation()
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        };
+
+        var elementDrag = function(e) {
+            e = e || window.event;
+            e.preventDefault();
+            e.stopImmediatePropagation()
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        };
+
+        var closeDragElement = function(e) {
+            // stop moving when mouse button is released:
+            document.onmouseup = null;
+            document.onmousemove = null;
+        };
+        elmnt.onmousedown = dragMouseDown;
+    },
+
 }
+
 
