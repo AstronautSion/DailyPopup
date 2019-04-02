@@ -98,8 +98,6 @@
         width:100%;
     }
 
-
-    
     .daily-popup__item.is-responsive .daily-popup__content{
         position:fixed;
         top:50%;
