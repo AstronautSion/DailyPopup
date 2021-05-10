@@ -8,7 +8,7 @@
 ```html
 <head>
   <title>Daily popup sample</title>
-  <script src="dailyPopup.js"></script>
+  <script src="dailyPopupES6.js"></script>
 </head>
 <body>
   <!-- 생성자 함수 new DailyPopup() 선언시 자동으로 body안에 생성됨 -->
