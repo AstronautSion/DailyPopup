@@ -1,3 +1,5 @@
+
+
 function DailyPopup(options) {
   this.options = null;
   this.default = null;
@@ -29,8 +31,8 @@ DailyPopup.prototype = {
       position: [10, 10],
     };
     options.type === 'responsive'
-      ? (this.default.img = ['https://placehold.it/500x600', 'https://placehold.it/500x600'])
-      : (this.default.img = 'https://placehold.it/500x600');
+      ? (this.default.img = ['http://placehold.it/500x600', 'http://placehold.it/500x600'])
+      : (this.default.img = 'http://placehold.it/500x600');
 
     this.options = options;
   },
@@ -73,27 +75,21 @@ DailyPopup.prototype = {
 
     typeString === 'is-responsive'
       ? (popupHtmlmiddle =
-          '<img class="daily-popup__img daily-popup__img--pc" src="' +
-          img[0] +
-          '"/><img class="daily-popup__img daily-popup__img--mobile" src="' +
-          img[1] +
-          '"/>')
+          '<img class="daily-popup__img daily-popup__img--pc" src="' +img[0]+'"/>'+
+          '<img class="daily-popup__img daily-popup__img--mobile" src="'+img[1]+'"/>')
       : (popupHtmlmiddle = '<img class="daily-popup__img" src="' + img + '"/>');
 
     popupHtmlEnd =
       '</a></div>' +
       '<div class="daily-popup__bottom">' +
       '<label class="daily-popup__checkbox-area">' +
-      '<input type="checkbox" id="daily-popup__checkbox' +
-      idx +
-      '" class="daily-popup__checkbox"/> 오늘하루 보지않기</label>' +
+      '<input type="checkbox" id="daily-popup__checkbox' +idx +'" class="daily-popup__checkbox"/> 오늘하루 보지않기</label>' +
       '<button id="daily-popup__close-button' +
       idx +
       '" type="button" class="daily-popup__close-button">닫기</button>' +
       '</div></div>';
 
     this.popup.insertAdjacentHTML('beforeend', popupHtmlStart + popupHtmlmiddle + popupHtmlEnd);
-    // this.dragEvent(this.popup.querySelector('#daily-popup--'+idx),link, linkTarget );
     this.popupItems = this.popup.querySelectorAll('.' + this.className.popup);
 
     this._imgSizeConfirm(this.popup.querySelector('#daily-popup--' + idx), typeString);
